@@ -1,5 +1,7 @@
 # Mindful-Oasis
  Mindful Oasis is a modern meditation website built with HTML, CSS, and JavaScript, featuring advanced techniques like Flexbox, Grid, Animations, Transitions, and Transforms. The website is fully responsive, uses media queries to ensure compatibility across all devices. It offers calm soundscapes, meditation basics and subscription plans etc.
+ 
+Check This Live - https://aero0308.github.io/Mindful-Oasis/
 
 Screenshots-
 ![Screenshot (343)](https://github.com/user-attachments/assets/b4374954-0155-4960-bac4-65e45d1fae8d)
