@@ -10,7 +10,8 @@
 
     <title>Document</title>
     <link rel="stylesheet" href="mindfuloasis.css">
-    <script src="script.js"></script>
+    <script type="module" src="firebaseauth.js"></script>
+    
 </head>
 <body>
     <header class="header">
@@ -18,8 +19,14 @@
             <a href="" class="header_title">
                  <img src="images/lotus.png" alt="title_icon" class="header_icon">
                  <span id="header_name">Mindful Oasis</span>
-                 <button id="toggleButton"></button>
             </a>
+            <button id="theme-toggle">
+                <!-- Moon icon for light mode -->
+                <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" ><path d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Z"/></svg>
+                
+                <!-- Sun icon for dark mode -->
+                <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" ><path d="M480-280q-83 0-141.5-58.5T280-480q0-83 58.5-141.5T480-680q83 0 141.5 58.5T680-480q0 83-58.5 141.5T480-280ZM200-440H40v-80h160v80Zm720 0H760v-80h160v80ZM440-760v-160h80v160h-80Zm0 720v-160h80v160h-80ZM256-650l-101-97 57-59 96 100-52 56Zm492 496-97-101 53-55 101 97-57 59Zm-98-550 97-101 59 57-100 96-56-52ZM154-212l101-97 55 53-97 101-59-57Z"/></svg>
+            </button>
             <div class="header_nav_list">
                 <a href="#mindguide_title" class="header_nav_link">Mind Guide</a>
                 <a href="#sound_heading" class="header_nav_link">Mind Waves</a>
@@ -29,9 +36,63 @@
                 <a href="#aboutus_title" class="header_nav_link">About Us</a>
             </div>
             <div class="header_button">
-                <button class="header_login_signup_button">Login</button>
-                <button class="header_login_signup_button">Signup</button>
+                <button id="loginTrigger" class="header_login_signup_button">Login</button>
+                <button id="signupTrigger" class="header_login_signup_button">Signup</button>
+                 <button id="logout-btn" style="display: none;">Logout</button>
             </div>
+            
+            <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            <div class="left-panel">
+                <h2>Login</h2>
+                <p>Login using social media for quick access</p>
+                <button class="social-btn facebook">Sign in with Facebook</button>
+                <button class="social-btn twitter">Sign in with Twitter</button>
+                <button class="social-btn google">Sign in with Google</button>
+            </div>
+            <div class="right-panel">
+                <h2>Login to your account</h2>
+                <p>Don't have an account? <a href="#" onclick="switchModal('signupModal')">Sign Up Free!</a></p>
+                <form>
+                    <input id="login_email" type="email" placeholder="Email address" required>
+                    <input id="login_password" type="password" placeholder="Password" required>
+                    <div class="form-options">
+                        <label><input type="checkbox"> Remember me</label>
+                        <a href="#">Forgot password?</a>
+                    </div>
+                    <button id="login_btn" type="button" class="login-btn">Login with Email</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+     <!-- Signup Modal -->
+     <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('signupModal')">&times;</span>
+            <div class="left-panel">
+                <h2>Sign Up</h2>
+                <p>Sign up using social media for quick access</p>
+                <button class="social-btn facebook">Sign up with Facebook</button>
+                <button class="social-btn twitter">Sign up with Twitter</button>
+                <button class="social-btn google">Sign up with Google</button>
+            </div>
+            <div class="right-panel">
+                <h2>Create a new account</h2>
+                <p>Already have an account? <a href="#" onclick="switchModal('loginModal')">Login here!</a></p>
+                <form>
+                    <input id="signup_fullName" type="text" placeholder="Full Name" required>
+                    <input id="signup_email" type="email" placeholder="Email address" required>
+                    <input id="signup_password" type="password" placeholder="Password" required>
+                    <button id="signup_btn" type="button" class="login-btn">Sign Up with Email</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
             <button type="button" class="header_menu">
                 <img src="images/hamburger-menu.png" alt="menu" class="header_menu_icon">
             </button>
@@ -48,7 +109,9 @@
                     <a href="#plan_title">
                         <button class="homepage_plan_button">Plans</button>
                     </a>
-                    <button class="homepage_contact_button">Contact Us</button>
+                    <a href="#contactus_title">
+                        <button class="homepage_contact_button">Contact Us</button>
+                    </a>
                 </div>
             </div>
             <div class="homepage_right_box">
@@ -457,6 +520,52 @@
         </div>
     </div>
 
+    <div class="contactus_container">
+        <div class="contactus_content">
+            <div class="contactus_image-section">
+                <img src="./images/madison-lavern-4gcqRf3-f2I-unsplash.jpg" alt="Two people" class="contactus_contact-image">
+            </div>
+            <div class="contactus_form-section">
+                <h1 id="contactus_title">Contact Us</h1>
+                <div class="contactus_form" >
+                    <div class="contactus_form_left">
+                        <form id="contactus_form_submit" action="https://formspree.io/f/xbljkdrp" method="POST" >
+                            <div class="contactus_form-group">
+                                <label for="fullname">Full Name</label>
+                                <input type="text" id="contactus_fullname" name="fullname" required>
+                            </div>
+            
+                            <div class="contactus_form-group">
+                                <label for="email">E-mail</label>
+                                <input type="email" id="contactus_email" name="email" required>
+                            </div>
+            
+                            <div class="contactus_form-group">
+                                <label for="message">Message</label>
+                                <textarea id="contactus_message" name="message" required></textarea>
+                            </div>
+            
+                            <button type="submit">Send</button>
+                        </form>
+                    </div>
+
+                    <div class="contactus_form_right">
+                        <div class="contactus_contact-info">
+                            <p><strong>Contact</strong><br>nihcasgupta2003@gmail.com</p>
+                            <p><strong>Based in</strong><br>Kanpur,UttarPradesh,India</p>
+                            <div class="contactus_social-icons">
+                                <a href="#"><img src="https://w7.pngwing.com/pngs/887/616/png-transparent-linkedin-icon-linkedin-text-rectangle-logo-thumbnail.png" alt="Linkedin"></a>
+                                <a href="#"><img src="https://cdn.icon-icons.com/icons2/4029/PNG/512/twitter_x_new_logo_square_x_icon_256075.png" alt="Twitter"></a>
+                                <a href="#"><img src="https://i.pinimg.com/736x/45/f4/9e/45f49e05ead9c272c67e821cbda2f49f.jpg" alt="Instagram"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
     <div class="update_container">
         <div class="update_content">
             <div class="update_leftbox">
@@ -470,12 +579,67 @@
                 <p class="update_desc">be the first to get updates on our latest content,special offers and new features</p>
                 </div>
                 <form class="update_form">
-                    <input class="update_email" type="text" placeholder="Email">
-                    <button class="update_signup_button">Sign Up</button>
+                    <input class="update_email" type="email" placeholder="Email" required>
+                    <button class="update_signup_button">Send</button>
                 </form>
                 <div class="update_privacy_box">
-                    <p class="update_privacy">By signing up,you're agreeingto receive marketing emails from Mindful Oasis.For more details check out our </p>
+                    <p class="update_privacy">By sending email,you're agreeingto receive marketing emails from Mindful Oasis.For more details check out our </p>
                     <a href="#">Privacy Policy.</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="faq_container">
+        <h1 class="faq_title">Frequently Asked Questions</h1>
+        <div class="faq_content">
+            <div class="faq_item">
+                <button class="faq_question">
+                    What is mindfulness meditation?
+                    <span class="faq_icon">+</span>
+                </button>
+                <div class="faq_answer">
+                    Mindfulness meditation is a mental training practice that teaches you to slow down racing thoughts, let go of negativity, and calm both your mind and body. It combines meditation with the practice of mindfulness, which means being present in the moment.
+                </div>
+            </div>
+    
+            <div class="faq_item">
+                <button class="faq_question">
+                    How often should I meditate?
+                    <span class="faq_icon">+</span>
+                </button>
+                <div class="faq_answer">
+                    For beginners, we recommend starting with 5-10 minutes daily. As you become more comfortable, you can gradually increase the duration. The key is consistency rather than length - meditating for a short time every day is more beneficial than long, irregular sessions.
+                </div>
+            </div>
+    
+            <div class="faq_item">
+                <button class="faq_question">
+                    Do I need any special equipment to meditate?
+                    <span class="faq_icon">+</span>
+                </button>
+                <div class="faq_answer">
+                    No special equipment is required! While some people enjoy using meditation cushions or benches, you can meditate anywhere - sitting in a chair, lying on your bed, or even walking. The most important thing is finding a quiet, comfortable space.
+                </div>
+            </div>
+    
+            <div class="faq_item">
+                <button class="faq_question">
+                    What are the benefits of regular meditation?
+                    <span class="faq_icon">+</span>
+                </button>
+                <div class="faq_answer">
+                    Regular meditation can provide numerous benefits including reduced stress and anxiety, improved focus and concentration, better sleep quality, increased self-awareness, and enhanced emotional well-being. Some studies also suggest it can help with pain management and boost immune function.
+                </div>
+            </div>
+    
+            <div class="faq_item">
+                <button class="faq_question">
+                    I can't stop thinking during meditation. Am I doing it wrong?
+                    <span class="faq_icon">+</span>
+                </button>
+                <div class="faq_answer">
+                    Not at all! Having thoughts during meditation is completely normal and expected. The goal isn't to stop thinking, but rather to observe your thoughts without judgment and gently return your attention to your breath or chosen point of focus. This is the practice of meditation.
                 </div>
             </div>
         </div>
@@ -540,5 +704,7 @@
             <img src="https://i.pinimg.com/736x/45/f4/9e/45f49e05ead9c272c67e821cbda2f49f.jpg" alt="social_media">
         </div>
     </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
